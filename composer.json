@@ -1,0 +1,26 @@
+{
+    "name": "h2v23/sagoboot",
+    "description": "SagoBoot | The mini-framework for scalable PHP application",
+    "keywords": ["framework", "sagoboot","php","mini-framework","mini-php"],
+    "authors": [
+        {
+            "name": "H2V23",
+            "email": "haihv23@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "~7.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "files": [
+            "src\/helpers.php"
+        ],
+        "psr-4": {
+            "SagoBoot\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable" : true
+}
