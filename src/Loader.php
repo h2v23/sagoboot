@@ -13,111 +13,29 @@ if (!defined('SGB_PATH')) {
 }
 
 
-class Loader implements \SagoBoot\Framework\Illuminate\Support\Module
+abstract class Loader implements \SagoBoot\Support\Module
 {
+    protected $_loaded = false;
+
     /**
-     * @var \SagoBoot\Framework\Application|Application
+     * @param Modules\Loader $loader
+     * @return mixed
+     * @since 1.0.0
      */
-    protected $app;
+    abstract public function autoload(\SagoBoot\Modules\Loader $loader);
 
-	/**
-	 * Autoload constructor.
-	 *
-	 * @param Application $app
-	 * @param mixed $packages
-	 *
-	 * @throws \Exception
-	 */
-    public function __construct(\SagoBoot\Application $app, $packages = false)
+    /**
+     * Deternime object loaded
+     * @param null $loaded
+     * @since 1.0.0
+     * @return bool
+     */
+    public function isLoaded($loaded = null)
     {
-        $this->app = $app;
-	    $args = func_get_args();
-        if (count($args)>1) {
-	        array_shift($args);
-            $this->init($args);
-        }
-    }
-
-    public function init($packages)
-    {
-        if (is_string($packages)) {
-            if (file_exists($packages)) {
-                /** @var array $packages */
-                $packages = require $packages;
-            }
-        }
-
-        if (is_array($packages) ) {
-            $this->initComponents($packages);
-            $this->bootComponents($packages);
-
-            return true;
+        if (is_null($loaded)) {
+            return $this->_loaded;
         } else {
-        	if (SGB_DEBUG) {
-        		throw new \Exception(
-        			'[Failed to add] Invalid packages.'
-		        );
-	        }
+            $this->_loaded = $loaded;
         }
-
-        return false;
-    }
-
-    /**
-     * @param $all
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function initComponents($all)
-    {
-        if (is_array($all)) {
-            foreach ($all as $component) {
-                if (class_exists($component['abstract'])) {
-                    $this->app->addComponent(
-                        $component['name'],
-                        $component['abstract'],
-                        $component['singleton']
-                    );
-                } elseif (SGB_DEBUG) {
-                    throw new \Exception(
-                        '[Failed to add] Class doesnt exists ' . $component['abstract'] . ' try composer update'
-                    );
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $all
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function bootComponents($all)
-    {
-        if (is_array($all)) {
-            foreach ($all as $component) {
-                if (class_exists($component['abstract'])) {
-                    if ($component['make']) {
-                        $this->app->make(
-                            $component['abstract']
-                        );
-                    }
-                } elseif (SGB_DEBUG) {
-                    throw new \Exception(
-                        '[Failed to Make] Class doesnt exists ' . $component['abstract'] . ' try composer update'
-                    );
-                }
-            }
-
-            return true;
-        }
-
-        return false;
     }
 }

@@ -12,7 +12,8 @@ if (!defined('SGB_PATH')) {
     exit;
 }
 
-use SagoBoot\Framework\Illuminate\Container\Container as ContainerContract;
+use SagoBoot\Framework\Container\Container as ContainerContract;
+use SagoBoot\Modules\Cli\Exception;
 
 /**
  * Class Application.
@@ -43,8 +44,9 @@ class Application extends ContainerContract
     protected $basePath;
     /**
      * @var array
+     * TODO: Change to protected after dev
      */
-    protected $aliases;
+    public $aliases;
 
     /**
      * Create a new Lumen application instance.
@@ -70,7 +72,7 @@ class Application extends ContainerContract
     }
 
     /**
-     *
+     * Boot the application
      */
     public function boot()
     {
@@ -83,7 +85,6 @@ class Application extends ContainerContract
      * @param array $parameters
      *
      * @return mixed
-     * @throws Illuminate\Container\BindingResolutionException
      * @throws \ReflectionException
      */
     public function make($abstract, $parameters = [])
@@ -109,19 +110,6 @@ class Application extends ContainerContract
     }
 
     /**
-     * @param $pattern - file pattern to search.
-     * @param int $flags
-     *
-     * @return array
-     */
-    public function glob($pattern, $flags = 0)
-    {
-        $files = glob($pattern, $flags);
-
-        return $files === false ? [] : (array)$files;
-    }
-
-    /**
      * Get plugin dir path + custom dir.
      *
      * @param $path
@@ -134,12 +122,23 @@ class Application extends ContainerContract
     }
 
     /**
+     * Get plugin dir path + custom dir.
+     *
+     * @param $path
+     *
+     * @return string
+     */
+    public function addPath($path)
+    {
+        return $this->basePath = $path;
+    }
+
+    /**
      * @param $componentName
      * @param $componentController
      * @param bool $singleton
      *
      * @return $this
-     * @throws Illuminate\Container\BindingResolutionException
      * @throws \ReflectionException
      */
     public function addComponent($componentName, $componentController, $singleton = true)

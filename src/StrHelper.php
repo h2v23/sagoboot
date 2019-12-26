@@ -1,45 +1,14 @@
 <?php
-/**
- * @author h2v23
- * @package SagoBoot | The mini-framework for scalable PHP application
- */
+
 
 namespace SagoBoot;
 
-if (!defined('SGB_PATH')) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit;
-}
 
-use SagoBoot\Framework\Illuminate\Support\Helper;
+use SagoBoot\Support\Helper;
 
-/**
- * Class Str.
- */
-class StrHelper implements Helper
+interface StrHelper extends Helper
+
 {
-	/**
-	 * The cache of snake-cased words.
-	 *
-	 * @var array
-	 */
-	protected static $snakeCache = [];
-
-	/**
-	 * The cache of camel-cased words.
-	 *
-	 * @var array
-	 */
-	protected static $camelCache = [];
-
-	/**
-	 * The cache of studly-cased words.
-	 *
-	 * @var array
-	 */
-	protected static $studlyCache = [];
-
 	/**
 	 * Convert a value to camel case.
 	 *
@@ -47,14 +16,7 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function camel($value)
-	{
-		if (isset(static::$camelCache[ $value ])) {
-			return static::$camelCache[ $value ];
-		}
-
-		return static::$camelCache[ $value ] = lcfirst(static::studly($value));
-	}
+	public function camel($value);
 
 	/**
 	 * Determine if a given string contains a given substring.
@@ -64,16 +26,7 @@ class StrHelper implements Helper
 	 *
 	 * @return bool
 	 */
-	public function contains($haystack, $needles)
-	{
-		foreach ((array)$needles as $needle) {
-			if ($needle != '' && strpos($haystack, $needle) !== false) {
-				return true;
-			}
-		}
-
-		return false;
-	}
+	public function contains($haystack, $needles);
 
 	/**
 	 * Determine if a given string ends with a given substring.
@@ -83,16 +36,7 @@ class StrHelper implements Helper
 	 *
 	 * @return bool
 	 */
-	public function endsWith($haystack, $needles)
-	{
-		foreach ((array)$needles as $needle) {
-			if ((string)$needle === substr($haystack, -strlen($needle))) {
-				return true;
-			}
-		}
-
-		return false;
-	}
+	public function endsWith($haystack, $needles);
 
 	/**
 	 * Cap a string with a single instance of a given value.
@@ -102,12 +46,7 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function finish($value, $cap)
-	{
-		$quoted = preg_quote($cap, '/');
-
-		return preg_replace('/(?:' . $quoted . ')+$/', '', $value) . $cap;
-	}
+	public function finish($value, $cap);
 
 	/**
 	 * Determine if a given string matches a given pattern.
@@ -117,22 +56,7 @@ class StrHelper implements Helper
 	 *
 	 * @return bool
 	 */
-	public function is($pattern, $value)
-	{
-		if ($pattern === $value) {
-			return true;
-		}
-
-		$pattern = preg_quote($pattern, '#');
-
-		// Asterisks are translated into zero-or-more regular expression wildcards
-		// to make it convenient to check if the strings starts with the given
-		// pattern such as "library/*", making any string check convenient.
-		$pattern = str_replace('\*', '.*', $pattern) . '\z';
-
-		return (bool)preg_match('#^' . $pattern . '#', $value);
-	}
-
+	public function is($pattern, $value);
 	/**
 	 * Return the length of the given string.
 	 *
@@ -140,10 +64,7 @@ class StrHelper implements Helper
 	 *
 	 * @return int
 	 */
-	public function length($value)
-	{
-		return strlen($value);
-	}
+	public function length($value);
 
 	/**
 	 * Limit the number of characters in a string.
@@ -154,14 +75,7 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function limit($value, $limit = 100, $end = '...')
-	{
-		if ($this->length($value) <= $limit) {
-			return $value;
-		}
-
-		return rtrim(substr($value, 0, $limit)) . $end;
-	}
+	public function limit($value, $limit = 100, $end = '...');
 
 	/**
 	 * Convert the given string to lower-case.
@@ -170,10 +84,7 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function lower($value)
-	{
-		return strtolower($value);
-	}
+	public function lower($value);
 
 	/**
 	 * Generate a "random" alpha-numeric string.
@@ -184,16 +95,7 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function quickRandom($length = 16)
-	{
-		if (intval($length) < 1) {
-			return '';
-		}
-
-		$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-		return substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
-	}
+	public function quickRandom($length = 16);
 
 	/**
 	 * Convert the given string to upper-case.
@@ -202,10 +104,7 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function upper($value)
-	{
-		return strtoupper($value);
-	}
+	public function upper($value);
 
 	/**
 	 * Convert a string to snake case.
@@ -215,20 +114,7 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function snake($value, $delimiter = '_')
-	{
-		$key = $value . $delimiter;
-
-		if (isset(static::$snakeCache[ $key ])) {
-			return static::$snakeCache[ $key ];
-		}
-
-		if (!ctype_lower($value)) {
-			$value = strtolower(preg_replace('/(.)(?=[A-Z])/', '$1' . $delimiter, $value));
-		}
-
-		return static::$snakeCache[ $key ] = $value;
-	}
+	public function snake($value, $delimiter = '_');
 
 	/**
 	 * Determine if a given string starts with a given substring.
@@ -238,16 +124,7 @@ class StrHelper implements Helper
 	 *
 	 * @return bool
 	 */
-	public function startsWith($haystack, $needles)
-	{
-		foreach ((array)$needles as $needle) {
-			if ($needle != '' && strpos($haystack, $needle) === 0) {
-				return true;
-			}
-		}
-
-		return false;
-	}
+	public function startsWith($haystack, $needles);
 
 	/**
 	 * Convert a value to studly caps case.
@@ -256,64 +133,33 @@ class StrHelper implements Helper
 	 *
 	 * @return string
 	 */
-	public function studly($value)
-	{
-		$key = $value;
+	public function studly($value);
 
-		if (isset(static::$studlyCache[ $key ])) {
-			return static::$studlyCache[ $key ];
-		}
+    /**
+     * @param $atts
+     * @return mixed
+     */
+	public function buildQueryString($atts);
 
-		$value = ucwords(str_replace(['-', '_'], ' ', $value));
+    /**
+     * @param $str
+     * @param bool $lower
+     * @return mixed
+     */
+	public function slugify($str, $lower = true);
 
-		return static::$studlyCache[ $key ] = str_replace(' ', '', $value);
-	}
+    /**
+     * Convert string to object
+     * @param $value
+     * @return mixed
+     */
+	public function convert($value);
 
-	public function buildQueryString($atts)
-	{
-		$output = [];
-		if (is_array($atts)) {
-			foreach ($atts as $key => $value) {
-				$output [] = $key . '="' . $value . '"';
-			}
-		}
-
-		return implode(' ', $output);
-	}
-
-	public function slugify($str, $lower = true)
-	{
-		$str = $lower ? strtolower($str) : $str;
-		$str = html_entity_decode($str);
-		$str = preg_replace('/[\-]+/', ' ', $str);
-		$str = preg_replace('/[^\w\s]+/', '', $str);
-		$str = preg_replace('/\s+/', '-', $str);
-
-		return $str;
-	}
-
-	public function convert($value)
-	{
-		switch (strtolower($value)) {
-			case 'true':
-			case '(true)':
-				return true;
-			case 'false':
-			case '(false)':
-				return false;
-			case 'empty':
-			case '(empty)':
-				return '';
-			case 'null':
-			case '(null)':
-				return null;
-		}
-
-		return $value;
-	}
-
-	public function toUnderscore($str)
-	{
-		return strtolower(trim(preg_replace('/([A-Z]|[0-9]+)/', "_$1", $str), '_'));
-	}
+    /**
+     * Convert camelCase to camel_case
+     *
+     * @param $str
+     * @return mixed
+     */
+	public function toUnderscore($str);
 }
