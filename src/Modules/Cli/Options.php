@@ -4,7 +4,7 @@
 namespace SagoBoot\Modules\Cli;
 
 
-class Options implements \SagoBoot\Singleton
+class Options implements \SagoBoot\Support\Singleton
 {
 	/** @var  array keeps the list of options to parse */
 	protected $setup;

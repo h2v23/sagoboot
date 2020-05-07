@@ -4,7 +4,7 @@
 namespace SagoBoot\Modules\Cli;
 
 
-class Colors implements \SagoBoot\Singleton
+class Colors implements \SagoBoot\Support\Singleton
 {
 	// these constants make IDE autocompletion easier, but color names can also be passed as strings
 	const C_RESET = 'reset';
