@@ -26,7 +26,7 @@ Or just clone repo from `github`
 
 ## Application and Loader
 
-The first important thing when creating your own application is the `App` class manager, who holds all the instances
+The first important thing when creating your own application is the `App` class manager, which holds all the instances
 
 See class [`SagoBoot\Sample\App\App`](https://github.com/haihv433/sagoboot/blob/master/sample/App/App.php) for a sample
 
@@ -56,7 +56,7 @@ Look at your own sample loader [`\SagoBoot\Sample\App\Loader`](https://github.co
         $loader->loadPath(__DIR__ . '/../autoload.php');
     }
     
-As you see, Loader using a file which set in `autoload.php`, take a look of this those thing:
+As you see, `Loader` using a file named `autoload.php`, take a look of this those lines:
 
     [
         'abstract' => \SagoBoot\Sample\Car\Car::class, 
@@ -67,13 +67,13 @@ As you see, Loader using a file which set in `autoload.php`, take a look of this
          ]
     ]
 
-The file contains an array, each one element is configuration:
+The file contains an array, each element has configuration:
 
 `abstract`: Define your class
 
 `make`: Set `true` if your want system constructs them automatically, or otherwise.
 
-`singleton`: Set instances as Singleton which access as the same
+`singleton`: Set instances as Singleton that allow accessing as the same
 
 `aliases`: You can hide your real logic when using `aliases` pattern, check class 
 [`\SagoBoot\Sample\Car\CarInterface`](https://github.com/haihv433/sagoboot/blob/master/sample/Car/CarInterface.php) 
@@ -88,7 +88,7 @@ Finally, don't forget to boot your system.
     
 ## Dependency Injection
 
-Now, if you'd finished declaring your Application, no more effort to construct your class, just inject
+Now, if you'd finished declaring your Application, no more effort to construct your class, just inject any class you needed
 
 The `MakeCar` sample class
 
@@ -125,14 +125,14 @@ the `Garage` sample class
 
 As you see above, no need to add  the `new` keyword when create class, which is already set in `autoload.php` 
 
-The Application also check the `aliases` of each class declear in `autoload.php` and `make` it.
+The Application also check the `aliases` for a reflection from real class to alias
 
 In this case, calling interface `\SagoBoot\Sample\Car\CarInterface` will return an instance of `\SagoBoot\Sample\Car\Car`
 
 ## Singleton
 
 If you set your class as `singleton` in `autoload.php` or `implements` from `\SagoBoot\Support\Singleton`, your Application will 
-cheat what one as `Singleton` what the same instance in any place was summom that class
+treat what one as `Singleton` object, that mean, calling or injection will return the same object.
 
 See this in `MakeCar.php::__construct()`
 
@@ -156,7 +156,7 @@ Output:
     Your car is: MAINTENANCE.
     The car was destroyed.
 
-For calling the instance of `Car` class, these method could useful:
+For calling the instance of `Car` class, these methods could useful:
 
 + Inject the interface `\SagoBoot\Sample\Car\CarInterface` in constructor
 + Calling `\SagoBoot\Sample\App\App::getInstance()->make(\SagoBoot\Sample\Car\CarInterface::class)`
@@ -164,13 +164,13 @@ For calling the instance of `Car` class, these method could useful:
 
 ## Event
 
-If you are noted, your application only boots when calling `$app->boot()`, 
+If you are noted, your application only boots when call `$app->boot()`, 
 look more closely in this method: 
 
     $this->make('EventsHelper')->fire('boot');
     
-The event `boot` is a system designed for booting, for that, you can add more logical after even before system boot, 
-just use 
+The event `boot` is a system designed for booting, for that, you can add your custom logic after or before system boot, 
+see this:
 
     $app->addEvent('your_custome_event', function() {
           // Your logical
@@ -183,10 +183,10 @@ just use
     
 ## API Functional
 
-For convenient when interact with your application, please check [`helpers.php`](https://github.com/haihv433/sagoboot/blob/master/src/helpers.php)
-for more API, you can:
+For more convenient when interact with your application, please check [`helpers.php`](https://github.com/haihv433/sagoboot/blob/master/src/helpers.php)
+for more options:
 
-+ Create or retrive an instance `sgb_app()`
++ Create or retrieve an instance `sgb_app()`
 + Call a `Helper` object `sgb_helper()`, (any class has name ending by `Helper` keyword)
 + Event `sgb_event()` and `sgb_add_event()`
 + Filter `sgb_filter` and `sgb_add_filter()` 
@@ -196,4 +196,4 @@ Do you love design pattern and how to implement them all, those articles might u
 + [DesignPatternsPHP](https://designpatternsphp.readthedocs.io/)
 + [Source Marking](https://sourcemaking.com/design_patterns)
 
-There is no principle when implementation `SagoBoot` with any pattern, Factory, Proxy, Repo ... whatever, you already have a skeleton, just do it !!!
+There is no principle when implement `SagoBoot` with any pattern, Factory, Proxy, Repo ... whatever, you already have a skeleton, just do it !!!
