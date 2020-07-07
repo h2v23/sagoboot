@@ -171,7 +171,7 @@ just use
         $this->make('EventsHelper')->fire('your_custome_event');
     })
     
-##API Functional
+## API Functional
 
 For convenient when interact with your application, please check [`helpers.php`](https://github.com/haihv433/sagoboot/blob/master/src/helpers.php)
 for more API, you can:
@@ -181,7 +181,7 @@ for more API, you can:
 + Event `sgb_event()` and `sgb_add_event()`
 + Filter `sgb_filter` and `sgb_add_filter()` 
 
-##Practical
+## Practical
 Do you love design pattern and how to implement them all, those articles might useful
 + [DesignPatternsPHP](https://designpatternsphp.readthedocs.io/)
 + [Source Marking](https://sourcemaking.com/design_patterns)
