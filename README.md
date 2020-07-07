@@ -14,6 +14,16 @@ out of the box, you can use it beside `Symfony` or `Zend` for the first routing 
 
 **SagoBoot**, which designed for ease to use, quicky start, flexible and compatible for any idea and projects.
 
+## Installation
+
+Install from `Composer` 
+
+    composer require haihv433/sagoboot
+
+Or just clone repo from `github`
+
+    git clone git@github.com:haihv433/sagoboot.git
+
 ## Application and Loader
 
 The first important thing when creating your own application is the `App` class manager, who holds all the instances
