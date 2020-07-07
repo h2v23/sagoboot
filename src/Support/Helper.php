@@ -1,21 +1,16 @@
 <?php
 /**
- * @author h2v23
+ * @author @haihv433
  * @package SagoBoot | The mini-framework for scalable PHP application
+ * @see https://github.com/haihv433/sagoboot
  */
 
 namespace SagoBoot\Support;
 
-if (!defined('SGB_PATH')) {
-    header('Status: 403 Forbidden');
-    header('HTTP/1.1 403 Forbidden');
-    exit;
-}
 
 /**
- * Empty interface to allow use in autoloader and instanceof methods.
- *
- * Interface Helper.
+ * Interface Helper
+ * @package SagoBoot\Support
  */
 interface Helper
 {

@@ -1,19 +1,15 @@
 <?php
 /**
- * @author h2v23
+ * @author @haihv433
  * @package SagoBoot | The mini-framework for scalable PHP application
+ * @see https://github.com/haihv433/sagoboot
  */
-
-//Define constant
-defined('SGB_DEBUG') OR define('SGB_DEBUG', false);
-defined('SGB_PATH') OR define('SGB_PATH', dirname(__FILE__) . '/');
 
 /**
  * @param null $make
  * @param array $parameters
  * @return mixed|\SagoBoot\Framework\Container\Container
  * @throws ReflectionException
- * @throws \SagoBoot\Framework\Container\BindingResolutionException
  */
 function sgb_app($make = null, $parameters = []) {
     if (is_null($make)) {
@@ -27,7 +23,7 @@ function sgb_app($make = null, $parameters = []) {
 /**
  * @param $name
  * @param array $parameters
- * @return mixed|\SagoBoot\Support\Helper
+ * @return mixed|\SagoBoot\Framework\Container\Container
  * @throws ReflectionException
  */
 function sgb_helper($name, $parameters = []) {
@@ -35,9 +31,7 @@ function sgb_helper($name, $parameters = []) {
 }
 
 /**
- * Fire the event
  * @param $event
- * @since 1.0.0
  * @param array $payload
  * @return mixed
  * @throws ReflectionException
@@ -47,27 +41,39 @@ function sgb_event($event, $payload = []) {
     return sgb_helper('Events')->fire($event, $payload);
 }
 
+/**
+ * @param $events
+ * @param $listener
+ * @param int $weight
+ * @return mixed
+ * @throws ReflectionException
+ */
 function sgb_add_event($events, $listener, $weight = 0) {
     /** @var \SagoBoot\EventsHelper::addEvent */
     return sgb_helper('Events')->addEvent($events, $listener, $weight);
 }
 
+/**
+ * @param $filter
+ * @param string $body
+ * @param array $payload
+ * @param bool $haltable
+ * @return mixed
+ * @throws ReflectionException
+ */
 function sgb_filter($filter, $body = '', $payload = [], $haltable = false) {
 	/** @var \SagoBoot\FiltersHelper::fire */
 	return sgb_helper('Filters')->fire($filter, $body, $payload, $haltable);
 }
 
+/**
+ * @param $filterName
+ * @param $methodCallback
+ * @param int $weight
+ * @return mixed
+ * @throws ReflectionException
+ */
 function sgb_add_filter($filterName, $methodCallback, $weight = 0) {
     /** @var \SagoBoot\FiltersHelper::fire */
     return sgb_helper('Filters')->addFilter($filterName, $methodCallback, $weight);
-}
-
-/**
- * Get Cli instance
- * @return \SagoBoot\Cli
- * @throws ReflectionException
- * @throws \SagoBoot\Framework\Container\BindingResolutionException
- */
-function sgb_cli() {
-	return sgb_app('Cli');
 }

@@ -1,23 +1,19 @@
 <?php
 /**
- * @author h2v23
+ * @author @haihv433
  * @package SagoBoot | The mini-framework for scalable PHP application
+ * @see https://github.com/haihv433/sagoboot
  */
 
 namespace SagoBoot\Framework\Filters;
-
-if (!defined('SGB_PATH')) {
-    header('Status: 403 Forbidden');
-    header('HTTP/1.1 403 Forbidden');
-    exit;
-}
 
 use SagoBoot\Framework\Application;
 use SagoBoot\Framework\Contracts\Events\Dispatcher as DispatcherContract;
 use SagoBoot\Framework\Events\Dispatcher as EventsDispatcher;
 
 /**
- * Class Dispatcher.
+ * Class Dispatcher
+ * @package SagoBoot\Framework\Filters
  */
 class Dispatcher extends EventsDispatcher implements DispatcherContract
 {

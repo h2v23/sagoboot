@@ -15,13 +15,6 @@ return [
         'aliases' => ['SagoBoot\StrHelper']
     ],
     [
-        'name' => 'Cli',
-        'abstract' => 'SagoBoot\\Modules\\Cli',
-        'make' => false,
-        'singleton' => true,
-        'aliases' => ['SagoBoot\Cli']
-    ],
-    [
         'name' => 'DataObject',
         'abstract' => 'SagoBoot\\Support\\DataObject',
         'make' => false,

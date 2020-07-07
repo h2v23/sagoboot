@@ -42,7 +42,6 @@ class Application extends ApplicationFactory
     {
         parent::__construct($basePath);
         $this->make('Autoload');
-        $this->command();
     }
 
 	/**
@@ -140,22 +139,5 @@ class Application extends ApplicationFactory
 	    );
 
 	    return $this;
-    }
-
-
-    protected function command() :void
-    {
-	    if (!$this->isCli()) {
-			return;
-	    }
-
-	    $this->addEvent(self::BOOT_EVENT_NAME, function () {
-		    $this->make('Cli')->run();
-	    }, 9);
-    }
-
-    protected function isCli()
-    {
-    	return (php_sapi_name() === 'cli');
     }
 }

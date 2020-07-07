@@ -1,17 +1,15 @@
 <?php
 /**
- * @author h2v23
+ * @author @haihv433
  * @package SagoBoot | The mini-framework for scalable PHP application
+ * @see https://github.com/haihv433/sagoboot
  */
 
 namespace SagoBoot\Support;
 
 /**
- * Universal data container with array access implementation
- *
- * @api
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- * @since 100.0.2
+ * Class DataObject
+ * @package SagoBoot\Support
  */
 class DataObject implements \SagoBoot\DataObject
 {

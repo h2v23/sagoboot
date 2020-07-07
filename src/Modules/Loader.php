@@ -1,22 +1,24 @@
 <?php
 /**
- * @author h2v23
+ * @author @haihv433
  * @package SagoBoot | The mini-framework for scalable PHP application
+ * @see https://github.com/haihv433/sagoboot
  */
 
 namespace SagoBoot\Modules;
 
-if (!defined('SGB_PATH')) {
-    header('Status: 403 Forbidden');
-    header('HTTP/1.1 403 Forbidden');
-    exit;
-}
+use Exception;
+use ReflectionException;
+use SagoBoot\Application;
 
-
+/**
+ * Class Loader
+ * @package SagoBoot\Modules
+ */
 class Loader extends \SagoBoot\Loader
 {
     /**
-     * @var \SagoBoot\Application
+     * @var Application
      */
     protected $app;
     /**
@@ -27,27 +29,33 @@ class Loader extends \SagoBoot\Loader
     /**
      * Autoload constructor.
      *
-     * @param \SagoBoot\Application $app
-     * @throws \ReflectionException
+     * @param Application $app
      */
-    public function __construct(\SagoBoot\Application $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
 
         if (!$this->isLoaded()) {
             $this->autoload(null);
-
-            $this->app->addEvent('boot', 'SagoBoot\\Modules\\Loader::signature', 1);
         }
 
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function init()
     {
 	    $packages = $this->useCache();
 	    return $this->loadComponents($packages);
     }
 
+    /**
+     * @param $packages
+     * @return bool
+     * @throws Exception
+     */
     protected function loadComponents($packages)
     {
         if (is_array($packages) ) {
@@ -56,20 +64,20 @@ class Loader extends \SagoBoot\Loader
 
             return true;
         } else {
-            if (SGB_DEBUG) {
-                throw new \Exception(
-                    '[Failed to add] Invalid packages.'
-                );
-            }
+            throw new Exception(
+                '[Failed to add] Invalid packages.'
+            );
         }
-        return false;
     }
 
+    /**
+     * @return array|mixed
+     */
     protected function useCache()
     {
-        $cache = SGB_PATH . 'cache/autoload.php';
+        $cache = __DIR__ . '/../cache/autoload.php';
         if (file_exists($cache)) {
-        	$components = require $cache;
+        	$components = require_once($cache);
         } else {
 	        $components = [];
         }
@@ -81,7 +89,7 @@ class Loader extends \SagoBoot\Loader
      * @param $all
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function initComponents($all)
     {
@@ -102,8 +110,8 @@ class Loader extends \SagoBoot\Loader
 	                if (isset($component['helper']) && file_exists($component['helper'])) {
                         require $component['helper'];
                     }
-                } elseif (SGB_DEBUG) {
-                    throw new \Exception(
+                } else {
+                    throw new Exception(
                         '[Failed to add] Class doesnt exists ' . $component['abstract'] . ' try composer update'
                     );
                 }
@@ -115,6 +123,10 @@ class Loader extends \SagoBoot\Loader
         return false;
     }
 
+    /**
+     * @param $component
+     * @return array|string
+     */
     private function unSerializeComponent($component)
     {
         if (is_string($component)) {
@@ -142,7 +154,7 @@ class Loader extends \SagoBoot\Loader
      * @param $all
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function bootComponents($all)
     {
@@ -155,8 +167,8 @@ class Loader extends \SagoBoot\Loader
                             $component['abstract']
                         );
                     }
-                } elseif (SGB_DEBUG) {
-                    throw new \Exception(
+                } else {
+                    throw new Exception(
                         '[Failed to Make] Class doesnt exists ' . $component['abstract'] . ' try composer update'
                     );
                 }
@@ -174,28 +186,17 @@ class Loader extends \SagoBoot\Loader
      * @param $path
      * @return bool
      * @since 1.0.0
-     * @throws \Exception
+     * @throws Exception
      */
     public function loadPath($path)
     {
         if (file_exists($path)) {
             $components = require $path;
             return $this->loadComponents($components);
-        } elseif (SGB_DEBUG) {
-            throw new \Exception(
+        } else {
+            throw new Exception(
                 '[Failed to add] Invalid packages path'
             );
-        }
-
-        return false;
-    }
-
-    public static function signature() {
-        if (function_exists('add_action')) {
-            // In Wp constructor
-            add_action('wp_footer', function () { ?>
-            <!-- <developer mgs="you are trying your best? :)" src="data:link/text;base64,bWFpbHRvOmhhaWh2NDMzQGdtYWlsLmNvbQ==" /> -->
-            <?php }, 9999);
         }
     }
 
@@ -215,7 +216,7 @@ class Loader extends \SagoBoot\Loader
     /**
      * @inheritDoc
      */
-    public function autoload($loader)
+    public function autoload($loader = null)
     {
         $this->init();
     }

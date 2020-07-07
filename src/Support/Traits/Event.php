@@ -1,12 +1,16 @@
 <?php
+/**
+ * @author @haihv433
+ * @package SagoBoot | The mini-framework for scalable PHP application
+ * @see https://github.com/haihv433/sagoboot
+ */
+
 namespace SagoBoot\Support\Traits;
 
-if (!defined('SGB_PATH')) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit;
-}
-
+/**
+ * Trait Event
+ * @package SagoBoot\Support\Traits
+ */
 trait Event
 {
     /**
